@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Tooltip from "./Tooltip";
 import SidePanel from "./SidePanel";
-import Notification from "./Notification";
 
 const MainHeading = ({ data }: { data?: MainHeadingData }) => {
     const [sidePanelState, setSidePanelState] = useState<boolean>(false);
@@ -10,16 +9,16 @@ const MainHeading = ({ data }: { data?: MainHeadingData }) => {
 
     return (
         <>
-            <div className="fixed w-full h-[60px] bg-black border-b border-borders flex felx-row z-[100]">
+            <div className="fixed w-full h-[60px] bg-white border-b border-borders flex felx-row z-[100]">
                 <Link to="/" className=" select-none">
                     <div
                         id="logo-cont"
-                        className="inline-block text-[24px] font-bold italic mx-[36px] mt-[12px]"
+                        className="inline-block text-[24px] font-bold mx-[36px] mt-[12px]"
                     >
-                        <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600 px-[1px]">
-                            Fire
+                        <span className="font-extrabold text-sky-400">
+                            Campus
                         </span>
-                        <span>Code</span>
+                        <span className="text-black">Code</span>
                     </div>
                 </Link>
                 {data != undefined &&
@@ -40,16 +39,6 @@ const MainHeading = ({ data }: { data?: MainHeadingData }) => {
                             <div className="group w-[32px] h-[32px] border border-borders rounded-[99px] relative hover:bg-[#222] cursor-pointer">
                                 <i className="bi bi-three-dots-vertical absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:text-white"></i>
                             </div>
-                        </div>
-
-                        <div
-                            id="notification"
-                            className="inline-block p-[5px] text-[14px] text-[#808080] "
-                        >
-                            <Notification
-                                display={notifDisplayState}
-                                displayFn={setNotifDisplayState}
-                            />
                         </div>
                         <div
                             id="profile-picture"

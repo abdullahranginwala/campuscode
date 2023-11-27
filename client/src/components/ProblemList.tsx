@@ -7,13 +7,9 @@ import StarIcon from "./StarIcon";
 import Tooltip from "./Tooltip";
 
 const ProblemList = ({
-    data,
-    searchFn,
-    searchQuery,
+    data
 }: {
     data: ProblemListData[];
-    searchFn: Function;
-    searchQuery: string;
 }) => {
     const [refReset, setRefReset] = useState<number>(0);
     const statusRef = useRef<HTMLDivElement>(null);
@@ -24,13 +20,6 @@ const ProblemList = ({
     const dislikesRef = useRef<HTMLDivElement>(null);
     const starRef = useRef<HTMLDivElement>(null);
 
-    const [SortOptions, setSortOptions] = useState<SortOptions>({
-        acceptance_rate_count: "",
-        difficulty: "",
-        title: "",
-    });
-
-    const [isSortLoading, setIsSortLoading] = useState<boolean>(false);
 
     const statusWidth = starRef.current?.clientWidth;
     const acceptanceWidth = acceptanceRef.current?.clientWidth;
@@ -38,51 +27,6 @@ const ProblemList = ({
     const likesWidth = likesRef.current?.clientWidth;
     const dislikesWidth = dislikesRef.current?.clientWidth;
     const starWidth = starRef.current?.clientWidth;
-
-    const difficultyOnClick = async () => {
-        setIsSortLoading(true);
-        const { difficulty } = SortOptions;
-        const newOptions: SortOptions = {
-            difficulty:
-                difficulty === "" ? "asc" : difficulty === "asc" ? "des" : "",
-            title: SortOptions.title,
-            acceptance_rate_count: SortOptions.acceptance_rate_count,
-        };
-        setSortOptions(newOptions);
-        await searchFn(searchQuery, newOptions);
-        setIsSortLoading(false);
-    };
-
-    const acceptanceOnClick = async () => {
-        setIsSortLoading(true);
-        const { acceptance_rate_count } = SortOptions;
-        const newOptions: SortOptions = {
-            acceptance_rate_count:
-                acceptance_rate_count === ""
-                    ? "asc"
-                    : acceptance_rate_count === "asc"
-                    ? "des"
-                    : "",
-            title: SortOptions.title,
-            difficulty: SortOptions.difficulty,
-        };
-        setSortOptions(newOptions);
-        await searchFn(searchQuery, newOptions);
-        setIsSortLoading(false);
-    };
-
-    const titleOnClick = async () => {
-        setIsSortLoading(true);
-        const { title } = SortOptions;
-        const newOptions: SortOptions = {
-            title: title === "" ? "asc" : title === "asc" ? "des" : "",
-            acceptance_rate_count: SortOptions.acceptance_rate_count,
-            difficulty: SortOptions.difficulty,
-        };
-        setSortOptions(newOptions);
-        await searchFn(searchQuery, newOptions);
-        setIsSortLoading(false);
-    };
 
     useEffect(() => {
         setRefReset(1);
@@ -103,53 +47,22 @@ const ProblemList = ({
                         id="title-label"
                         className="h-fit flex-grow px-[20px] hover:text-white hover:cursor-pointer transition"
                         ref={titleRef}
-                        style={{
-                            color:
-                                SortOptions.title === "asc"
-                                    ? "rgb(34, 197, 94)"
-                                    : SortOptions.title === "des"
-                                    ? "rgb(220, 38, 38)"
-                                    : "",
-                        }}
-                        onClick={() => titleOnClick()}
                     >
                         Title
-                        <SortIcon order={SortOptions.title} />
                     </div>
                     <div
                         id="accaptance-label"
                         className="h-fit w-fit px-[20px] hover:text-white hover:cursor-pointer transition"
                         ref={acceptanceRef}
-                        style={{
-                            color:
-                                SortOptions.acceptance_rate_count === "asc"
-                                    ? "rgb(34, 197, 94)"
-                                    : SortOptions.acceptance_rate_count ===
-                                      "des"
-                                    ? "rgb(220, 38, 38)"
-                                    : "",
-                        }}
-                        onClick={() => acceptanceOnClick()}
                     >
                         Acceptance
-                        <SortIcon order={SortOptions.acceptance_rate_count} />
                     </div>
                     <div
                         id="difficulty-label"
                         className="h-fit w-fit px-[20px] hover:cursor-pointer hover:text-white transition"
                         ref={difficultyRef}
-                        style={{
-                            color:
-                                SortOptions.difficulty === "asc"
-                                    ? "rgb(34, 197, 94)"
-                                    : SortOptions.difficulty === "des"
-                                    ? "rgb(220, 38, 38)"
-                                    : "",
-                        }}
-                        onClick={() => difficultyOnClick()}
                     >
                         Difficulty
-                        <SortIcon order={SortOptions.difficulty} />
                     </div>
                     <div
                         id="likes-label"
@@ -177,17 +90,6 @@ const ProblemList = ({
                 data.length !== 0 &&
                 statusRef.current != null ? (
                     <>
-                        {isSortLoading ? (
-                            <div className="sort-loading-backdrop w-[calc(100%-18px)] h-[calc(100%-126px)] z-[180] absolute top-[100px] ">
-                                <div className="relative w-full h-full">
-                                    <div className="absolute top-1/2 left-1/2">
-                                        <Loading color="white" />
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <></>
-                        )}
                         {data.map(({ main }) => (
                             <div
                                 className={`h-[40px] w-full text-[14px] hover:text-black duration-150 ${
